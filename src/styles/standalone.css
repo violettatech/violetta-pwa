@@ -1,0 +1,76 @@
+/* Tema visual inspirado en el standalone */
+
+:root{
+  --violetta-bg1:#fff0fb;
+  --violetta-bg2:#f8f0ff;
+  --violetta-pink:#f472b6;   /* pink-400 */
+  --violetta-pink-600:#db2777; /* pink-600 */
+  --violetta-purple:#a78bfa; /* violet-400 */
+  --violetta-deep:#6d28d9;   /* violet-700 */
+}
+
+.vio-bg {
+  background: radial-gradient(1200px 600px at 10% -10%, var(--violetta-bg1) 0, transparent 60%),
+              radial-gradient(1200px 600px at 110% -20%, var(--violetta-bg2) 0, transparent 60%),
+              linear-gradient(180deg, #ffffff, #fffefe);
+}
+
+.card {
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(16,24,40,.04),
+    0 8px 24px rgba(16,24,40,.06);
+}
+
+.btn {
+  border-radius: 9999px;
+  padding: .65rem 1rem;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--violetta-pink), var(--violetta-purple));
+  color: #fff;
+}
+
+.btn-outline {
+  border:1px solid #e5e7eb;
+  background:#fff;
+}
+
+.chip {
+  font-size:.75rem;
+  line-height:1rem;
+  padding:.25rem .5rem;
+  border-radius:9999px;
+  background:#f3f4f6;
+  color:#374151;
+}
+
+.bubble{
+  border-radius:1.5rem;
+  padding: .875rem 1rem;
+  max-width: 75%;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 6px 14px rgba(0,0,0,.06);
+}
+
+.bubble-ai{
+  background:#fff;
+  border-top-left-radius:.5rem;
+  color:#4c1d95; /* violet-900 */
+}
+.bubble-me{
+  background: linear-gradient(90deg, var(--violetta-pink), var(--violetta-purple));
+  border-top-right-radius:.5rem;
+  color:#fff;
+}
+
+.nav-pill{
+  border-radius: 9999px;
+  padding:.5rem .9rem;
+}
+.nav-pill.active{
+  background: var(--violetta-deep);
+  color:#fff;
+}

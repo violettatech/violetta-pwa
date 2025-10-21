@@ -1,0 +1,38 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# ✅ Redirección SPA (React Router)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ✅ Encabezados de seguridad básicos
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    X-XSS-Protection = "1; mode=block"
+
+# ✅ Cache estático para assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ✅ Cache controlado para el Service Worker
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# ✅ Variables de entorno (defínelas en el panel de Netlify)
+# VITE_ENV=production
+# VITE_API_URL=https://api.violetta.app
+# VITE_POSTHOG_KEY=tu_clave_posthog
+# VITE_UNLEASH_URL=https://tu-servidor-unleash/api/frontend
+# VITE_UNLEASH_CLIENT_KEY=tu_client_key

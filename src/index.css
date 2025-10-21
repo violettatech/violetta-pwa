@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Opcional: variable de color rápida para pruebas */
+:root { --violetta: #a855f7; }
+
+@import './styles/brand.css';
+@import './styles/standalone.css';
