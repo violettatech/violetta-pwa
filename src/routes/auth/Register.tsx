@@ -2,12 +2,16 @@ import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react'
 import { useSession } from '../../store/useSession'
+import PronounPicker from '../../components/PronounPicker'
+import type { BuiltInPronouns, GrammaticalGender } from '../../store/useSession'
 
 type Provider = 'google' | 'apple' | 'microsoft'
 
+const REQUIRE_CODE_AFTER_OAUTH = false
+
 export default function Register() {
   const nav = useNavigate()
-  const { setSession } = useSession()
+  const { setSession, setPendingEmail, setPendingPhone, setPendingMethod } = useSession()
 
   const nameRef = useRef<HTMLInputElement | null>(null)
   const emailRef = useRef<HTMLInputElement | null>(null)
@@ -16,7 +20,11 @@ export default function Register() {
   const [busyProvider, setBusyProvider] = useState<Provider | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  // --- Crear cuenta con formulario ---
+  // NUEVO: estado local para pronombres y género
+  const [pronouns, setPronouns] = useState<{ type: BuiltInPronouns; custom?: { display?: string } }>({ type: 'elle' })
+  const [gender, setGender] = useState<GrammaticalGender>('x')
+
+  // --- Crear cuenta con formulario (passwordless por email) ---
   const onSubmit = (e: FormEvent) => {
     e.preventDefault()
     setError(null)
@@ -29,45 +37,91 @@ export default function Register() {
       nameRef.current?.focus()
       return
     }
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Si escribes tu correo, debe ser válido.')
+    if (!email) {
+      setError('Necesitamos tu correo para enviarte un código de verificación.')
+      emailRef.current?.focus()
+      return
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('El correo debe ser válido.')
       emailRef.current?.focus()
       return
     }
 
     setBusyForm(true)
 
+    // Simula “enviar código” por email y prepara LoginCode
     setTimeout(() => {
-      setSession({
-        userName: name,
-        userEmail: email || undefined,
-        hasCompletedOnboarding: false, // vamos al onboarding
-        createdAt: new Date().toISOString(),
-      })
+      try {
+        localStorage.setItem('violetta-pending-email', email)
+        localStorage.setItem('violetta-pending-method', 'email')
+        localStorage.setItem('violetta-pending-name', name)
+        localStorage.setItem('violetta-just-registered', '1')
+        // NUEVO: guardar pronombres y género
+        localStorage.setItem('violetta-pending-pronouns', JSON.stringify(pronouns))
+        localStorage.setItem('violetta-pending-gender', gender)
+      } catch { /* ignore storage errors in demo */ }
+
+      try {
+        setPendingEmail(email)
+        setPendingPhone(undefined)
+        setPendingMethod('email')
+      } catch { /* ignore */ }
+
+      alert(`Te enviamos un código a ${email}. Revísalo para continuar.`)
       setBusyForm(false)
-      nav('/auth/onboarding/1', { replace: true })
+      nav('/auth/login-code', { replace: true })
     }, 350)
   }
 
-  // --- Crear cuenta con proveedor (simulado) ---
+  // --- Crear cuenta con proveedor (OAuth simulado) ---
   const signWith = (p: Provider) => {
     setBusyProvider(p)
     setError(null)
 
-    // Simulamos un resultado del proveedor. Aquí luego conectamos OAuth real.
     setTimeout(() => {
       const fake = {
-        google:   { email: 'tu.nombre@gmail.com',      name: 'Tú (Google)' },
-        apple:    { email: 'privado@privaterelay.appleid.com', name: 'Tú (Apple)' },
-        microsoft:{ email: 'tu.nombre@outlook.com',    name: 'Tú (Microsoft)' },
+        google:    { email: 'tu.nombre@gmail.com', name: 'Tú (Google)' },
+        apple:     { email: 'privado@privaterelay.appleid.com', name: 'Tú (Apple)' },
+        microsoft: { email: 'tu.nombre@outlook.com', name: 'Tú (Microsoft)' },
       }[p]
 
-      setSession({
-        userName: fake.name,
-        userEmail: fake.email,
-        hasCompletedOnboarding: false,
-        createdAt: new Date().toISOString(),
-      })
+      if (REQUIRE_CODE_AFTER_OAUTH) {
+        try {
+          localStorage.setItem('violetta-pending-email', fake.email)
+          localStorage.setItem('violetta-pending-method', 'email')
+          localStorage.setItem('violetta-pending-name', fake.name)
+          localStorage.setItem('violetta-just-registered', '1')
+          // NUEVO
+          localStorage.setItem('violetta-pending-pronouns', JSON.stringify(pronouns))
+          localStorage.setItem('violetta-pending-gender', gender)
+        } catch { /* ignore */ }
+
+        try {
+          setPendingEmail(fake.email)
+          setPendingPhone(undefined)
+          setPendingMethod('email')
+        } catch { /* ignore */ }
+
+        alert(`Te enviamos un código a ${fake.email}. Revísalo para continuar.`)
+        setBusyProvider(null)
+        nav('/auth/login-code', { replace: true })
+        return
+      }
+
+      // Sin verificación extra (práctica común)
+      try {
+        setSession({
+          userName: fake.name,
+          userEmail: fake.email,
+          hasCompletedOnboarding: false,
+          createdAt: new Date().toISOString(),
+          // NUEVO
+          pronouns,
+          grammaticalGender: gender,
+        })
+      } catch { /* ignore */ }
+
       setBusyProvider(null)
       nav('/auth/onboarding/1', { replace: true })
     }, 500)
@@ -110,7 +164,7 @@ export default function Register() {
           />
 
           <label className="mt-4 text-sm font-medium text-purple-800">
-            Tu correo (opcional)
+            Tu correo
           </label>
           <input
             ref={emailRef}
@@ -119,6 +173,18 @@ export default function Register() {
             placeholder="tu@correo.com"
             className="mt-2 w-full rounded-2xl border border-purple-100 bg-purple-50 px-4 py-3 text-purple-800 placeholder-purple-300 outline-none focus:border-purple-300"
           />
+
+          {/* NUEVO: picker de pronombres */}
+          <div className="mt-4">
+            <PronounPicker
+              value={pronouns}
+              gender={gender}
+              onChange={({ pronouns: p, gender: ggen }) => {
+                setPronouns(p)
+                setGender(ggen)
+              }}
+            />
+          </div>
 
           <p className="mt-3 rounded-2xl bg-purple-50 px-3 py-2 text-xs text-purple-700">
             🔒 Tus datos se mantendrán seguros. Solo Violetta los verá.
@@ -131,7 +197,7 @@ export default function Register() {
             disabled={busyForm}
             className="mt-4 w-full rounded-2xl bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-pink-300 px-4 py-3 font-semibold text-white hover:opacity-95 disabled:opacity-60"
           >
-            {busyForm ? 'Creando…' : 'Continuar →'}
+            {busyForm ? 'Enviando código…' : 'Crear y verificar →'}
           </button>
         </form>
 

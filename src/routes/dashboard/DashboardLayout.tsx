@@ -3,7 +3,8 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useSession } from '../../store/useSession'
 import BottomNav from '../../components/nav/BottomNav'
 // Importa el nuevo ícono
-import { User, Settings, Info, LogOut, HelpCircle } from 'lucide-react'; 
+import { User, Settings, Info, LogOut, HelpCircle } from 'lucide-react';
+import { renderPronouns } from '../../utils/gender'
 
 // --- UPDATED MenuSheet ---
 function MenuSheet({
@@ -71,13 +72,16 @@ function MenuSheet({
   )
 }
 
-
 export default function DashboardLayout() {
   const { session, clear } = useSession()
   const nav = useNavigate()
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false)
   const name = session?.userName || 'María'
+
+  // Pronombres para header
+  const pr = session?.pronouns
+  const pronounsText = pr ? renderPronouns(pr.type, pr.custom) : undefined
 
   // La condición solo afecta al H1 ahora
   const showGreeting = location.pathname === '/dashboard' || location.pathname === '/dashboard/home';
@@ -96,7 +100,7 @@ export default function DashboardLayout() {
         {/* El H1 solo se renderiza si showGreeting es true */}
         {showGreeting ? (
           <h1 className="text-2xl font-bold text-gray-800">
-            Hola, {name} <span className="align-[-2px]">✨</span>
+            Hola, {name}{pronounsText ? <span className="text-gray-500 font-normal"> · {pronounsText}</span> : null} <span className="align-[-2px]">✨</span>
           </h1>
         ) : (
           // Si no se muestra el H1, dejamos un div vacío para mantener el layout

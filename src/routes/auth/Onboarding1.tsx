@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '../../store/useSession'
+import { g } from '../../utils/gender'
 
 export default function Onboarding1() {
   const nav = useNavigate()
   const { session } = useSession()
+  const gender = session?.grammaticalGender || 'x'
+  const name = session?.userName || 'amiga'
 
   const next = () => nav('/auth/onboarding/2')
   const skip = () => nav('/auth/onboarding/3') // puedes cambiar a dashboard directo si quieres
@@ -21,16 +24,15 @@ export default function Onboarding1() {
         </div>
 
         <h1 className="text-center text-3xl font-semibold text-purple-900">
-          Bienvenida, {session?.userName || 'amiga'} ✨
+          {g('Bienvenid', gender)}, {name} ✨
         </h1>
         <p className="mt-3 text-center text-purple-700">
           Violetta es un espacio seguro para pausar, expresar y acompañarte día a día.
         </p>
 
         <section className="card mt-6 p-5 space-y-3 text-purple-900">
-          <p>• Registra cómo te sientes y observa tu progreso.</p>
-          <p>• Accede a ejercicios de respiración y calma.</p>
-          <p>• Ten a mano tu plan de emergencia cuando lo necesites.</p>
+          <p>• Entiende tus emociones y descubre patrones registrando cómo te sientes.</p>
+          <p>• Siéntete más segura con un plan de emergencia y una red de apoyo a tu alcance.</p>
         </section>
 
         <div className="mt-6 flex gap-3">

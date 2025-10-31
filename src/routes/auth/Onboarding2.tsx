@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom'
+import { useSession } from '../../store/useSession'
 
 export default function Onboarding2() {
   const nav = useNavigate()
+  // Importado por consistencia; útil si luego personalizas textos según la sesión
+  const { session } = useSession()
   const next = () => nav('/auth/onboarding/3')
   const back = () => nav('/auth/onboarding/1')
   const skip = () => nav('/auth/onboarding/3')
@@ -19,23 +22,28 @@ export default function Onboarding2() {
         </div>
 
         <h1 className="text-center text-3xl font-semibold text-purple-900">
-          Tu privacidad es primero
+          Cuidar tu privacidad y seguridad es nuestra prioridad
         </h1>
         <p className="mt-3 text-center text-purple-700">
-          Tus datos se guardan localmente en tu dispositivo. Solo tú los ves. Puedes exportarlos o borrarlos cuando quieras.
+          Cuidamos tu información con respeto y transparencia. Solo usamos tus datos para mejorar tu experiencia y ayudar a más personas de forma anónima.
         </p>
 
         <section className="card mt-6 p-5 space-y-3 text-purple-900">
-          <p>• Sin cuentas obligatorias.</p>
-          <p>• Exportar / importar tu información.</p>
-          <p>• Elige si quieres respaldo más adelante.</p>
+          <p>• Tus conversaciones y datos son confidenciales y están protegidos con cifrado.</p>
+          <p>• Solo usamos datos anónimos para generar estadísticas que nos ayuden a prevenir la violencia de género, cuidando siempre tu identidad.</p>
         </section>
 
         <div className="mt-6 flex gap-3">
-          <button onClick={skip} className="flex-1 rounded-2xl border border-purple-200 bg-white px-4 py-3 text-purple-800 hover:bg-purple-50 transition">
+          <button
+            onClick={skip}
+            className="flex-1 rounded-2xl border border-purple-200 bg-white px-4 py-3 text-purple-800 hover:bg-purple-50 transition"
+          >
             Omitir
           </button>
-          <button onClick={next} className="flex-1 rounded-2xl bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-pink-300 px-4 py-3 font-semibold text-white">
+          <button
+            onClick={next}
+            className="flex-1 rounded-2xl bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-pink-300 px-4 py-3 font-semibold text-white"
+          >
             Siguiente →
           </button>
         </div>

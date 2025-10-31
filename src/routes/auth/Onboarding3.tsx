@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSession } from '../../store/useSession'
+import { g } from '../../utils/gender'
 
 export default function Onboarding3() {
   const nav = useNavigate()
   const { session, setOnboardingDone, setSession } = useSession()
+  const gender = session?.grammaticalGender || 'x'
+  const name = session?.userName || 'amigx'
 
   // 🔧 Crea una sesión demo si no existe
   useEffect(() => {
@@ -39,8 +42,11 @@ export default function Onboarding3() {
         </div>
 
         <h1 className="text-3xl font-bold text-violet-800">¡Todo listo!</h1>
-        <p className="mt-4 text-gray-600">
-          Tu espacio seguro está preparado para ti. Recuerda, estoy aquí para escucharte sin juicios.
+        <p className="mt-2 text-violet-800 font-semibold">
+          {g('Bienvenid', gender)}, {name}.
+        </p>
+        <p className="mt-3 text-gray-600">
+          Tu espacio seguro está {g('preparad', gender)} para ti. Recuerda, estoy aquí para escucharte sin juicios.
         </p>
 
         <div className="mt-10">
