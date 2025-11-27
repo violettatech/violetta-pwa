@@ -59,10 +59,10 @@ export default function About() {
         
         {/* Puedes añadir versión de la app, enlaces a políticas, etc. */}
         <div className="pt-4 text-xs text-gray-400 text-center">
-          <p>Violetta App v1.0.0 (Demo)</p>
-          <a href="https://holasoyvioletta.com/politica-de-privacidad/" target="_blank" rel="noreferrer" className="underline hover:text-violet-600">Política de Privacidad</a>
+          <p>Violetta App v1.1 - Nov 2025 (Prototype)</p>
+          <a href="https://holasoyvioletta.com/privacidad/" target="_blank" rel="noreferrer" className="underline hover:text-violet-600">Política de Privacidad</a>
           {' - '}
-          <a href="https://holasoyvioletta.com/terminos-y-condiciones/" target="_blank" rel="noreferrer" className="underline hover:text-violet-600">Términos y Condiciones</a>
+          <a href="https://holasoyvioletta.com/terminos/" target="_blank" rel="noreferrer" className="underline hover:text-violet-600">Términos y Condiciones</a>
         </div>
 
       </main>

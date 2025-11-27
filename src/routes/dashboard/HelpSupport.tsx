@@ -32,24 +32,52 @@ export default function HelpSupport() {
         <div className="space-y-2">
           <h2 className="text-sm font-semibold text-violet-700 uppercase tracking-wide pt-4 pb-2">Preguntas Frecuentes</h2>
           <FaqItem
-            question="¿Cómo edito una entrada del diario?"
-            answer="Ve a la pantalla 'Mi Diario', busca la entrada que quieres modificar y toca el icono del lápiz."
-          />
-          <FaqItem
-            question="¿Mis datos están seguros?"
-            answer="Sí, tu privacidad es nuestra prioridad. Tus entradas de diario se guardan localmente en tu dispositivo y no se comparten sin tu permiso."
-          />
-          <FaqItem
-            question="¿Cómo funciona la Racha Actual?"
-            answer="La racha cuenta los días consecutivos en los que has escrito al menos una entrada en tu diario. ¡Es una forma de motivarte a mantener el hábito!"
-          />
+  question="¿Cómo funciona Violetta IA?"
+  answer="Violetta IA utiliza un modelo diseñado para acompañarte con calidez y seguridad. No usa tus conversaciones para entrenarse. Sus respuestas se basan en técnicas de bienestar emocional y primeros auxilios emocionales."
+/>
+
+<FaqItem
+  question="¿Mis datos están seguros?"
+  answer="Sí. Tu privacidad es una prioridad. Tus entradas de diario se guardan localmente en tu dispositivo. Tus mensajes con Violetta IA no se utilizan para entrenar modelos y no se comparten con terceros."
+/>
+
+<FaqItem
+  question="¿Qué hago si estoy en una emergencia?"
+  answer="Violetta no es un servicio de emergencia. Si estás en peligro o necesitas ayuda inmediata, llama al 911 o al número de emergencias local de tu país."
+/>
+
+<FaqItem
+  question="¿Qué tipo de ayuda ofrece la Línea Violetta?"
+  answer="La Línea Violetta ofrece apoyo psicológico y emocional. No sustituye a servicios médicos o policiales de emergencia."
+/>
+
+<FaqItem
+  question="¿Qué es un Contacto de Confianza?"
+  answer="Son personas que tú eliges para que puedas llamarlas o enviarles un mensaje rápidamente en caso de necesidad."
+/>
+
+<FaqItem
+  question="¿Qué mensaje se envía cuando uso la opción de ayuda rápida?"
+  answer="Se envía un mensaje predeterminado que puedes personalizar en Ajustes. Si activas el uso de ubicación, se puede adjuntar tu ubicación aproximada."
+/>
+
+<FaqItem
+  question="¿Puedo usar Violetta sin conexión?"
+  answer="Sí. Tu diario, metas y contactos funcionarán sin internet. La IA y los recursos profesionales requieren conexión."
+/>
+
+<FaqItem
+  question="¿Cómo funcionan la racha y las insignias?"
+  answer="La racha aumenta cada día que escribes en tu diario. Las insignias marcan tus primeros logros y se desbloquean conforme avanzas."
+/>
+
 
           <h2 className="text-sm font-semibold text-violet-700 uppercase tracking-wide pt-6 pb-2">Contacto</h2>
           <p className="text-sm text-gray-600 mb-4">
             Si tienes alguna otra pregunta o necesitas asistencia, puedes contactarnos:
           </p>
           <a
-            href="mailto:soporte@holasoyvioletta.com" // Email de ejemplo
+            href="mailto:tech@holasoyvioletta.com" // Email de ejemplo
             className="block w-full text-center py-3 px-4 bg-violet-600 text-white font-semibold rounded-lg hover:bg-violet-700"
           >
             Enviar un Email
